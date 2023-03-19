@@ -13,7 +13,7 @@
 #include <Windows.h>
 #include <d3d10.h>
 #include <d3dx10.h>
-//sua ne 
+
 #include "debug.h"
 #include "Game.h"
 #include "Textures.h"
@@ -23,34 +23,40 @@
 
 #include "Animation.h"
 #include "Animations.h"
-#include "Mario.h"
+#include "Bill.h"
+#include"Background.h"
 
 #define WINDOW_CLASS_NAME L"SampleWindow"
-#define MAIN_WINDOW_TITLE L"02 - Sprite animation"
-#define WINDOW_ICON_PATH L"mario.ico"
+#define MAIN_WINDOW_TITLE L"Bill - Run Shoot Jump Swim"
+#define WINDOW_ICON_PATH L"contra.ico"
 
 #define BACKGROUND_COLOR D3DXCOLOR(200.0f/255, 200.0f/255, 255.0f/255,0.0f)
 #define SCREEN_WIDTH 320
 #define SCREEN_HEIGHT 240
 
-#define ID_TEX_MARIO 0
+
 #define ID_TEX_ENEMY 10
 #define ID_TEX_MISC 20
 #define ID_TEX_BILL 30
+#define ID_TEX_FLIPBILL 1
+#define ID_TEX_BACKGROUND 2
+
 
 #define TEXTURES_DIR L"textures"
 #define TEXTURES_DIR_1 L"resources"
-#define TEXTURE_PATH_MARIO TEXTURES_DIR "\\mario.png"
 #define TEXTURE_PATH_MISC TEXTURES_DIR "\\misc_transparent.png"
-#define TEXTURE_PATH_ENEMIES TEXTURES_DIR "\\enemies.png"
 #define TEXTURE_PATH_BILL TEXTURES_DIR_1 "\\Bill.png"
+#define TEXTURE_PATH_FLIPBILL TEXTURES_DIR_1 "\\flipbill.png"
+#define TEXTURE_PATH_BACKGROUND TEXTURES_DIR_1 "\\background.png"
 
-CMario *mario;
-#define MARIO_START_X 10.0f
-#define MARIO_START_Y 130.0f
-#define MARIO_START_VX 0.1f
 
-CBrick *brick;
+
+CBill *bill;
+#define BILL_START_X 10.0f
+#define BILL_START_Y 130.0f
+#define BILL_START_VX 0.1f
+
+CBackground *background;
 
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -73,50 +79,75 @@ void LoadResources()
 {
 	CTextures * textures = CTextures::GetInstance();
 
-	textures->Add(ID_TEX_MARIO, TEXTURE_PATH_BILL);
+	textures->Add(ID_TEX_BILL, TEXTURE_PATH_BILL);
 	textures->Add(ID_TEX_MISC, TEXTURE_PATH_MISC);
-
+	textures->Add(ID_TEX_FLIPBILL, TEXTURE_PATH_FLIPBILL);
+	textures->Add(ID_TEX_BACKGROUND, TEXTURE_PATH_BACKGROUND);
 
 	CSprites * sprites = CSprites::GetInstance();
 	
-	LPTEXTURE texMario = textures->Get(ID_TEX_MARIO);
+	LPTEXTURE texBill = textures->Get(ID_TEX_BILL);
+	LPTEXTURE texFlipBill = textures->Get(ID_TEX_FLIPBILL);
+	LPTEXTURE texBackground = textures->Get(ID_TEX_BACKGROUND);
 
-	// readline => id, left, top, right 
 
 
+
+	// readline => id, left, top, right , bottom
+
+	sprites->Add(99999, 0, 0, 3456, 245, texBackground);
 	
-	//Bill-Run
-	sprites->Add(10001, 25, 24, 44, 59, texMario);
-	sprites->Add(10002, 90, 27, 110, 58, texMario);
-	sprites->Add(10003, 157, 25, 173, 59, texMario);
-	sprites->Add(10004, 220, 25, 238, 59, texMario);
-	sprites->Add(10005, 285, 27, 305, 58, texMario);
-	sprites->Add(10006, 353, 24, 369, 59, texMario);
+	//Bill-Run - Shoot - Jump
+	sprites->Add(10001, 25, 24, 44, 59, texBill);
+	sprites->Add(10002, 90, 27, 110, 58, texBill);
+	sprites->Add(10003, 157, 25, 173, 59, texBill);
+	sprites->Add(10004, 220, 25, 238, 59, texBill);
+	sprites->Add(10005, 285, 27, 305, 58, texBill);
+	sprites->Add(10006, 353, 24, 369, 59, texBill);
 
-	//Bill-Shoot
-	sprites->Add(10100, 415, 25, 440, 59, texMario);
-	sprites->Add(10101, 480, 26, 505, 58, texMario);
-	sprites->Add(10102, 547, 25, 570, 59, texMario);
-	sprites->Add(10103, 610, 26, 635, 59, texMario);
-	sprites->Add(10104, 675, 27, 700, 58, texMario);
-	sprites->Add(10105, 742, 26, 765, 59, texMario);
+	sprites->Add(10007, 415, 25, 440, 59, texBill);
+	sprites->Add(10008, 480, 26, 505, 58, texBill);
+	sprites->Add(10009, 547, 25, 570, 59, texBill);
+	sprites->Add(10010, 610, 26, 635, 59, texBill);
+	sprites->Add(10011, 675, 27, 700, 58, texBill);
+	sprites->Add(10012, 742, 26, 765, 59, texBill);
+
+	sprites->Add(10013, 805, 98, 821, 118, texBill);
+	sprites->Add(10014, 868, 99, 887, 115, texBill);
+	sprites->Add(10015, 935, 96, 951, 116, texBill);
+	sprites->Add(10016, 999, 99, 1018, 115, texBill);
+	
 
 	//Bill-Swim
-	sprites->Add(10200, 25, 167, 41, 180, texMario);
-	sprites->Add(10201, 90, 160, 106, 175, texMario);
-	sprites->Add(10202, 155, 159, 171, 174, texMario);
-	sprites->Add(10203, 220, 157, 245, 173, texMario);
-	sprites->Add(10204, 285, 156, 310, 173, texMario);
-	sprites->Add(10205, 350, 156, 369, 173, texMario);
-	sprites->Add(10206, 415, 155, 434, 173, texMario);
-	sprites->Add(10207, 480, 146, 497, 173, texMario);
-	sprites->Add(10208, 545, 145, 562, 173, texMario);
-	sprites->Add(10209, 610, 167, 626, 174, texMario);
-	sprites->Add(10210, 675, 166, 691, 173, texMario);
+	sprites->Add(10200, 25, 167, 41, 180, texBill);
+	sprites->Add(10201, 90, 160, 106, 175, texBill);
+	sprites->Add(10202, 155, 159, 171, 174, texBill);
+	sprites->Add(10203, 220, 157, 245, 173, texBill);
+	sprites->Add(10204, 285, 156, 310, 173, texBill);
+	sprites->Add(10205, 350, 156, 369, 173, texBill);
+	sprites->Add(10206, 415, 155, 434, 173, texBill);
+	sprites->Add(10207, 480, 146, 497, 173, texBill);
+	sprites->Add(10208, 545, 145, 562, 173, texBill);
+	sprites->Add(10209, 610, 167, 626, 174, texBill);
+	sprites->Add(10210, 675, 166, 691, 173, texBill);
+
+	//Bill-Flip Swim
+	sprites->Add(10300, 2040, 167, 2056, 180, texFlipBill);
+	sprites->Add(10301, 1975, 160, 1991, 175, texFlipBill);
+	sprites->Add(10302, 1910, 159, 1926, 174, texFlipBill);
+	sprites->Add(10303, 1836, 157, 1861, 173, texFlipBill);
+	sprites->Add(10304, 1771, 156, 1796, 173, texFlipBill);
+	sprites->Add(10305, 1712, 156, 1731, 173, texFlipBill);
+	sprites->Add(10306, 1647, 155, 1666, 173, texFlipBill);
+	sprites->Add(10307, 1584, 146, 1601, 173, texFlipBill);
+	sprites->Add(10308, 1519, 145, 1536, 173, texFlipBill);
+	sprites->Add(10309, 1455, 167, 1471, 174, texFlipBill);
+	sprites->Add(10310, 1390, 166, 1406, 173, texFlipBill);
+	sprites->Add(10311, 1325, 167, 1341, 183, texFlipBill);
 
 	CAnimations* animations = CAnimations::GetInstance();
 	LPANIMATION ani;
-
+	
 	ani = new CAnimation(100);
 	ani->Add(10001);
 	ani->Add(10002);
@@ -124,20 +155,16 @@ void LoadResources()
 	ani->Add(10004);
 	ani->Add(10005);
 	ani->Add(10006);
-	animations->Add(500, ani);
-
-
-
-	ani = new CAnimation(100);
-	ani->Add(10100);
-	ani->Add(10101);
-	ani->Add(10102);
-	ani->Add(10103);
-	ani->Add(10104);
-	ani->Add(10105);
-	animations->Add(501, ani);
-
-	ani = new CAnimation(100);
+	ani->Add(10007);
+	ani->Add(10008);
+	ani->Add(10009);
+	ani->Add(10010);
+	ani->Add(10011);
+	ani->Add(10012);
+	ani->Add(10013);
+	ani->Add(10014);
+	ani->Add(10015);
+	ani->Add(10016);
 	ani->Add(10200);
 	ani->Add(10201);
 	ani->Add(10202);
@@ -149,7 +176,41 @@ void LoadResources()
 	ani->Add(10208);
 	ani->Add(10209);
 	ani->Add(10210);
+	animations->Add(500, ani);
+
+	ani = new CAnimation(100);
+	ani->Add(10300);
+	ani->Add(10301);
+	ani->Add(10302);
+	ani->Add(10303);
+	ani->Add(10304);
+	ani->Add(10305);
+	ani->Add(10306);
+	ani->Add(10307);
+	ani->Add(10308);
+	ani->Add(10309);
+	ani->Add(10310);
+	ani->Add(10311);
+	animations->Add(501, ani);
+
+	ani = new CAnimation(100);
+	ani->Add(99999);
 	animations->Add(502, ani);
+	/*ani = new CAnimation(100);
+	ani->Add(10300);
+	ani->Add(10301);
+	ani->Add(10302);
+	ani->Add(10303);
+	ani->Add(10304);
+	ani->Add(10305);
+	ani->Add(10306);
+	ani->Add(10307);
+	ani->Add(10308);
+	ani->Add(10309);
+	ani->Add(10310);
+	ani->Add(10311);
+	animations->Add(501, ani);*/
+
 
 	LPTEXTURE texMisc = textures->Get(ID_TEX_MISC);
 	sprites->Add(20001, 300, 117, 317, 133, texMisc);
@@ -164,9 +225,8 @@ void LoadResources()
 	ani->Add(20004);
 	animations->Add(510, ani);
 	
-	mario = new CMario(MARIO_START_X, MARIO_START_Y, MARIO_START_VX);
-
-	brick = new CBrick(100.0f, 100.0f);
+	bill = new CBill(BILL_START_X, BILL_START_Y, BILL_START_VX);
+	//background = new CBackground(0, 120);
 }
 
 /*
@@ -175,7 +235,7 @@ void LoadResources()
 */
 void Update(DWORD dt)
 {
-	mario->Update(dt);
+	bill->Update(dt);
 }
 
 void Render()
@@ -198,15 +258,16 @@ void Render()
 		FLOAT NewBlendFactor[4] = { 0,0,0,0 };
 		pD3DDevice->OMSetBlendState(g->GetAlphaBlending(), NewBlendFactor, 0xffffffff);
 
-		//brick->Render();
-		mario->Render();
+		//background->Render();
+		bill->Render();
+		
 
 		// Uncomment this line to see how to draw a porttion of a texture  
 		//g->Draw(10, 10, texMisc, 300, 117, 316, 133);
 
 
 		spriteHandler->End();
-		pSwapChain->Present(0, 0);
+		pSwapChain->Present(0,0);
 	}
 }
 

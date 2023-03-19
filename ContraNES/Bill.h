@@ -5,7 +5,7 @@
 #include "Animation.h"
 #include "Animations.h"
 
-#define MARIO_WIDTH 14
+#define BILL_WIDTH 14
 
 class CBrick : public CGameObject {
 public: 
@@ -14,12 +14,12 @@ public:
 	void Update(DWORD dt) {}
 };
 
-class CMario : public CGameObject
+class CBill : public CGameObject
 {
 protected:
 	float vx;
 public:
-	CMario(float x, float y, float vx);
+	CBill(float x, float y, float vx);
 	void Update(DWORD dt);
 	void Render();
 };
