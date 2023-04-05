@@ -2,9 +2,6 @@
 
 #include "Sprite.h"
 
-/*
-	Sprite animation
-*/
 class CAnimationFrame
 {
 	LPSPRITE sprite;
@@ -17,4 +14,3 @@ public:
 };
 
 typedef CAnimationFrame* LPANIMATION_FRAME;
-
