@@ -1,12 +1,17 @@
 #include "Game.h"
 #include "Bill.h"
 
-CBill::CBill(float x, float y, float vx):CGameObject(x, y)
+CBill::CBill(float x, float y):CGameObject(x, y)
 {
-	this->vx = vx;
+	SetState(BILL_STATE_RUNNING_RIGHT);
 };
 
-void CBill::Update(DWORD dt)
+void CBill::GetBoundingBox(float& left, float& top, float& right, float& bottom)
+{
+	//Get bbox
+}
+
+void CBill::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	x += vx*dt;
 
@@ -31,16 +36,13 @@ void CBill::Render()
 	LPANIMATION ani;
 
 	//[RED FLAG][TODO]: Student needs to think about how to associate this animation/asset to Mario!!
-	if (vx>0) ani = CAnimations::GetInstance()->Get(500);
-	else ani = CAnimations::GetInstance()->Get(501);
+	if (vx>0) ani = CAnimations::GetInstance()->Get(101);
+	else ani = CAnimations::GetInstance()->Get(102);
 
 	ani->Render(x, y);
 }
 
-void CBrick::Render() {
-
-	LPANIMATION ani = CAnimations::GetInstance()->Get(510);
-
-	ani->Render(x, y);
-
+void CBill::SetState(int state)
+{
+	
 }
