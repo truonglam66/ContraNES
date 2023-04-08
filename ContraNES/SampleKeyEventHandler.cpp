@@ -8,18 +8,19 @@
 
 void CSampleKeyHandler::OnKeyDown(int KeyCode)
 {
+	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 	CBill* bill = (CBill*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 
 	switch (KeyCode)
 	{
 	case DIK_DOWN:
-		//bill->SetState(BILL_STATE_SIT);
+		bill->SetState(BILL_STATE_SIT);
 		break;
 	case DIK_S:
-		//bill->SetState(BILL_STATE_JUMP);
+		bill->SetState(BILL_STATE_JUMP);
 		break;
 	case DIK_0:
-		//bill->SetState(BILL_STATE_DIE);
+		bill->SetState(BILL_STATE_DIE);
 		break;
 	case DIK_R: // reset
 		//Reload();
@@ -29,14 +30,16 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 
 void CSampleKeyHandler::OnKeyUp(int KeyCode)
 {
+	//DebugOut(L"[INFO] KeyUp: %d\n", KeyCode);
+
 	CBill* bill = (CBill*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	switch (KeyCode)
 	{
 	case DIK_S:
-		//bill->SetState(BILL_STATE_RELEASE_JUMP);
+		bill->SetState(BILL_STATE_RELEASE_JUMP);
 		break;
 	case DIK_DOWN:
-		//bill->SetState(BILL_STATE_SIT_RELEASE);
+		bill->SetState(BILL_STATE_SIT_RELEASE);
 		break;
 	}
 }
@@ -60,6 +63,6 @@ void CSampleKeyHandler::KeyState(BYTE* states)
 		else
 			bill->SetState(BILL_STATE_WALKING_LEFT);
 	}
-	//else
-		//bill->SetState(BILL_STATE_IDLE);
+	else
+		bill->SetState(BILL_STATE_IDLE);
 }

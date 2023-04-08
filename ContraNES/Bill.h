@@ -27,6 +27,10 @@
 
 #define BILL_STATE_SIT				7
 #define BILL_STATE_SIT_RELEASE		8
+#define BILL_STATE_DIE				9
+
+#define BILL_STATE_RELEASE_JUMP		10
+
 
 #pragma region ANIMATION_ID
 
@@ -51,30 +55,43 @@
 #define ID_ANI_BILL_BRACE_RIGHT 1000
 #define ID_ANI_BILL_BRACE_LEFT 1001
 
+#define ID_ANI_BILL_DIE	1002
 #pragma endregion
 #define BILL_WIDTH 14
 
 class CBill : public CGameObject
 {
-protected:
-	float ax;
-	float ay;
+	BOOLEAN isSitting;
+	float maxVx;
+	float ax;				// acceleration on x 
+	float ay;				// acceleration on y 
 
-	ULONGLONG die_start;
+	int level;
+	int untouchable;
+	ULONGLONG untouchable_start;
+	BOOLEAN isOnPlatform;
+	int coin;
 
-	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
-	virtual void Render();
-
-	virtual int IsCollidable() { return 1; };
-	virtual int IsBlocking() { return 0; }
-	//virtual void OnNoCollision(DWORD dt);
-
-	//virtual void OnCollisionWith(LPCOLLISIONEVENT e);
+	//void OnCollisionWithSoldier(LPCOLLISIONEVENT e);
+	//void OnCollisionWithCoin(LPCOLLISIONEVENT e);
+	//void OnCollisionWithPortal(LPCOLLISIONEVENT e);
 
 public:
 	CBill(float x, float y);
-	virtual void SetState(int state);
-};
+	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+	void Render();
+	void SetState(int state);
 
+	int IsCollidable()
+	{
+		return (state != BILL_STATE_DIE);
+	}
+
+	int IsBlocking() { return (state != BILL_STATE_DIE); }
+
+	void OnNoCollision(DWORD dt);
+	void OnCollisionWith(LPCOLLISIONEVENT e);
+
+	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+};
 
