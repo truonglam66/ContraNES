@@ -1,0 +1,18 @@
+# list of object assets to load in this scene
+[ASSETS]
+bill.txt
+soldier.txt
+
+#
+[OBJECTS]
+# type	x	y	extra_settings per object type
+# type: 1 = Bill, Soldier = 11
+# See OBJECT_TYPE constants in AssetIDs.h
+
+#BILL
+1	40	100
+#SOLDIER
+11	20	20
+
+#Portal 
+#50	300	110	316	140	2
