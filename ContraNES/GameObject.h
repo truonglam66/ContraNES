@@ -17,6 +17,7 @@ using namespace std;
 class CGameObject
 {
 protected:
+	int id = 0;//default
 
 	float x;
 	float y;
@@ -31,6 +32,9 @@ protected:
 	bool isDeleted;
 
 public:
+	int GetID() { return this->id; }
+	void SetID(int _id) { this->id = _id; }
+
 	void SetPosition(float x, float y) { this->x = x, this->y = y; }
 	void SetSpeed(float vx, float vy) { this->vx = vx, this->vy = vy; }
 	void GetPosition(float& x, float& y) { x = this->x; y = this->y; }
