@@ -3,5 +3,5 @@
 void CBackground::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();
-	animations->Get(502)->Render(x, y);
+	animations->Get(9999)->Render(x, y);
 }

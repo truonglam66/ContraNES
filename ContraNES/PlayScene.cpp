@@ -9,6 +9,8 @@
 #include "Soldier.h"
 #include "Bill.h"
 #include "Portal.h"
+#include "Background.h"
+#include "Ground.h"
 
 #include "SampleKeyEventHandler.h"
 #include "debug.h"
@@ -101,7 +103,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	int object_type = atoi(tokens[0].c_str());
 	float x = (float)atof(tokens[1].c_str());
 	float y = (float)atof(tokens[2].c_str());
-
+	float _width, _height = 0;
 	CGameObject* obj = NULL;
 
 	switch (object_type)
@@ -114,8 +116,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CBill(x, y);
 		player = (CBill*)obj;
 		break;
-	//case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x, y); break;
-	//case OBJECT_TYPE_BRICK: obj = new CBrick(x, y); break;
+	case OBJECT_TYPE_BACKGROUND:
+		obj = new CBackground(x, y);
+		break;
+	case OBJECT_TYPE_GROUND:
+		_width = (float)atof(tokens[3].c_str());
+		_height = (float)atof(tokens[4].c_str());
+		obj = new CGround(x, y, _width, _height);
+		break;
 	//case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
 
 	/*case OBJECT_TYPE_PLATFORM:
@@ -147,12 +155,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	//break;
 
 	case OBJECT_TYPE_SOLDIER:
-	{
 		obj = new CSoldier(x, y);
 		break;
-	}
-	break;
-
 	default:
 		DebugOut(L"[ERROR] Invalid object type: %d\n", object_type);
 		return;
@@ -264,7 +268,7 @@ void CPlayScene::Update(DWORD dt)
 
 	if (cx < 0) cx = 0;
 
-	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
+	CGame::GetInstance()->SetCamPos(cx, 0/*cy*/);
 
 	PurgeDeletedObjects();
 }

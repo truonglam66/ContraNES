@@ -4,12 +4,12 @@
 #include "Animation.h"
 #include "Animations.h"
 
-#define ID_ANI_BRICK 99999
-#define BRICK_WIDTH 16
+#define ID_ANI_BACKGROUND 9999
 
 class CBackground : public CGameObject {
 public:
 	CBackground(float x, float y) : CGameObject(x, y) {}
 	void Render();
 	void Update(DWORD dt) {}
+	void GetBoundingBox(float& left, float& top, float& right, float& bottom) {};
 };

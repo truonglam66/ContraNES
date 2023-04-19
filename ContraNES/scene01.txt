@@ -2,6 +2,7 @@
 [ASSETS]
 bill.txt
 soldier.txt
+map.txt
 
 #
 [OBJECTS]
@@ -9,10 +10,15 @@ soldier.txt
 # type: 1 = Bill, Soldier = 11
 # See OBJECT_TYPE constants in AssetIDs.h
 
+#map
+9999	1664	120
 #BILL
-1	40	100
+1	60	80
 #SOLDIER
 11	20	20
 
 #Portal 
 #50	300	110	316	140	2
+
+#Ground
+999	151	400	80	736
