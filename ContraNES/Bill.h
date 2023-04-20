@@ -71,7 +71,7 @@ class CBill : public CGameObject
 	ULONGLONG untouchable_start;
 	BOOLEAN isOnPlatform;
 	int coin;
-
+	void OnCollisionWithGround(LPCOLLISIONEVENT e);
 	//void OnCollisionWithSoldier(LPCOLLISIONEVENT e);
 	//void OnCollisionWithCoin(LPCOLLISIONEVENT e);
 	//void OnCollisionWithPortal(LPCOLLISIONEVENT e);

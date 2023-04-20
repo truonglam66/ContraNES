@@ -7,6 +7,8 @@
 #define ID_ANI_BACKGROUND 9999
 
 class CBackground : public CGameObject {
+	int IsCollidable() { return 0; };
+	int IsBlocking() { return 0; }
 public:
 	CBackground(float x, float y) : CGameObject(x, y) {}
 	void Render();

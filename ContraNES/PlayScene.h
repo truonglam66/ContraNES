@@ -4,13 +4,13 @@
 #include "Scene.h"
 #include "GameObject.h"
 #include "Bill.h"
-
+#include "Map.h"
 class CPlayScene : public CScene
 {
 protected:
 	// A play scene has to have player, right? 
 	LPGAMEOBJECT player;
-
+	CMap* map;
 	vector<LPGAMEOBJECT> objects;
 
 	void _ParseSection_SPRITES(string line);
@@ -18,7 +18,7 @@ protected:
 
 	void _ParseSection_ASSETS(string line);
 	void _ParseSection_OBJECTS(string line);
-
+	void _ParseSection_TILEMAP(string line);
 	void LoadAssets(LPCWSTR assetFile);
 
 public:

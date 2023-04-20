@@ -22,3 +22,6 @@ height	240
 5	textures\Player1.png
 30	textures\ContraColumna_1.png
 38	textures\ContraMapStage1BG.png
+100	textures\stage1Tile.png
+888	textures\grass.png
+-100	textures\bbox.png

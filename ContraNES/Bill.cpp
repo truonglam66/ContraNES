@@ -6,7 +6,7 @@ CBill::CBill(float x, float y):CGameObject(x, y)
 	isSitting = false;
 	maxVx = 0.0f;
 	ax = 0.0f;
-	ay = BILL_GRAVITY;
+	ay = -BILL_GRAVITY;
 
 	isOnPlatform = false;
 	SetState(BILL_STATE_IDLE);
@@ -18,7 +18,12 @@ void CBill::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vx += ax * dt;
 
 	if (abs(vx) > abs(maxVx)) vx = maxVx;
-
+	if (x < 0) x = 0;
+	if (y < 0)
+	{
+		ay = 0;
+		y = 0;
+	}
 	isOnPlatform = false;
 
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -35,14 +40,15 @@ void CBill::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (e->ny != 0 && e->obj->IsBlocking())
 	{
 		vy = 0;
-		if (e->ny < 0) isOnPlatform = true;
+		//if (e->ny < 0) {
+			isOnPlatform = true;
+		//}
 	}
 	else
 		if (e->nx != 0 && e->obj->IsBlocking())
 		{
 			vx = 0;
 		}
-
 	/*if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
 	else if (dynamic_cast<CCoin*>(e->obj))
@@ -101,10 +107,15 @@ void CBill::OnCollisionWith(LPCOLLISIONEVENT e)
 // Get animation ID for small Mario
 //
 
+void CBill::OnCollisionWithGround(LPCOLLISIONEVENT e)
+{
+	vy = 0;
+}
+
 void CBill::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();
-	int aniId;
+	int aniId = 103;
 	switch (state)
 	{
 	case BILL_STATE_RUNNING_LEFT:
@@ -212,28 +223,8 @@ void CBill::SetState(int state)
 
 void CBill::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	//if (level == BILL_LEVEL_BIG)
-	//{
-	//	if (isSitting)
-	//	{
-	//		left = x - BILL_BIG_SITTING_BBOX_WIDTH / 2;
-	//		top = y - BILL_BIG_SITTING_BBOX_HEIGHT / 2;
-	//		right = left + BILL_BIG_SITTING_BBOX_WIDTH;
-	//		bottom = top + BILL_BIG_SITTING_BBOX_HEIGHT;
-	//	}
-	//	else
-	//	{
-	//		left = x - BILL_BIG_BBOX_WIDTH / 2;
-	//		top = y - BILL_BIG_BBOX_HEIGHT / 2;
-	//		right = left + BILL_BIG_BBOX_WIDTH;
-	//		bottom = top + BILL_BIG_BBOX_HEIGHT;
-	//	}
-	//}
-	//else
-	//{
-	//	left = x - BILL_SMALL_BBOX_WIDTH / 2;
-	//	top = y - BILL_SMALL_BBOX_HEIGHT / 2;
-	//	right = left + BILL_SMALL_BBOX_WIDTH;
-	//	bottom = top + BILL_SMALL_BBOX_HEIGHT;
-	//}
+	left = x - 23 / 2;
+	bottom = y + 30 / 2;
+	right = x + 23 / 2;
+	top = y - 30 / 2;
 }
