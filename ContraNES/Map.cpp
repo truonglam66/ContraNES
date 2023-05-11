@@ -51,9 +51,9 @@ void CMap::Render()
 	for (int CurrentRow = BeginRow; CurrentRow < EndRow; CurrentRow++)
 		for (int CurrentColumn = BeginColumn; CurrentColumn < EndColumn; CurrentColumn++)
 		{
-			int index = TileMap[CurrentRow][CurrentColumn] - 1;
-			DebugOut(L"index: %d", index);
-			Tiles.at(index)->Draw((float)(CurrentColumn * TILE_WIDTH)+8, (float)(CurrentRow * TILE_HEIGHT)+8);
+			//int index = TileMap[CurrentRow][CurrentColumn] - 1;
+			//DebugOut(L"index: %d", index);
+			//Tiles.at(index)->Draw((float)(CurrentColumn * TILE_WIDTH)+8, (float)(CurrentRow * TILE_HEIGHT)+8);
 		}
 }
 
