@@ -41,19 +41,21 @@ void CMap::Render()
 	game->GetCamPos(cam_x, cam_y);
 	int cam_w = game->GetBackBufferWidth();
 	int cam_h = game->GetBackBufferHeight();
-
-	int BeginRow = (int)floor(cam_y / TILE_HEIGHT);
-	int EndRow = (int)ceil((cam_y + cam_h) / TILE_HEIGHT);
-	int BeginColumn = (int)floor(cam_x / TILE_WIDTH);
-	int EndColumn = (int)ceil((cam_x + cam_w) / TILE_WIDTH);
-
-	//Render
-	for (int CurrentRow = BeginRow; CurrentRow < EndRow; CurrentRow++)
-		for (int CurrentColumn = BeginColumn; CurrentColumn < EndColumn; CurrentColumn++)
+	int FirstColumn = int(floor(cam_x / TILE_WIDTH));
+	int LastColumn = TotalColumnsInMap;
+	if (LastColumn >= TotalColumnsInMap)
+		LastColumn = TotalColumnsInMap - 1;
+	int d = 0;
+	for (int CurrentRow = 0; CurrentRow < TotalRowsInMap; CurrentRow++)
+		for (int CurrentColumn = FirstColumn; CurrentColumn <= LastColumn; CurrentColumn++)
 		{
-			//int index = TileMap[CurrentRow][CurrentColumn] - 1;
-			//DebugOut(L"index: %d", index);
-			//Tiles.at(index)->Draw((float)(CurrentColumn * TILE_WIDTH)+8, (float)(CurrentRow * TILE_HEIGHT)+8);
+			int index = TileMap[CurrentRow][CurrentColumn] - 1;
+			if (index < TotalTiles)
+			{
+				float xDraw = float(CurrentColumn * TILE_WIDTH);
+				float yDraw = float(CurrentRow * TILE_HEIGHT);
+				Tiles.at(index)->Draw(xDraw + 8, yDraw);
+			}
 		}
 }
 

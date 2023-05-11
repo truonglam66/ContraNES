@@ -305,7 +305,7 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::Render()
 {
-	map->Render();
+	//map->Render();
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
 }
