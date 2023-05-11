@@ -11,6 +11,7 @@
 #include "Portal.h"
 #include "Background.h"
 #include "Ground.h"
+#include "Soldier2.h"
 
 #include "SampleKeyEventHandler.h"
 #include "debug.h"
@@ -158,6 +159,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_SOLDIER:
 		obj = new CSoldier(x, y);
 		break;
+	case OBJECT_TYPE_SOLDIER2:
+		obj = new CSoldier2(x, y);
+		break;
 	default:
 		DebugOut(L"[ERROR] Invalid object type: %d\n", object_type);
 		return;
@@ -293,15 +297,15 @@ void CPlayScene::Update(DWORD dt)
 	cy -= game->GetBackBufferHeight() / 2;
 
 	if (cx < 0) cx = 0; 
-	if (cy < 0) cy = 0;
-	CGame::GetInstance()->SetCamPos(cx, cy);
+	//if (cy < 200) cy = 200;
+	CGame::GetInstance()->SetCamPos(cx, 200);
 
 	PurgeDeletedObjects();
 }
 
 void CPlayScene::Render()
 {
-	//map->Render();
+	map->Render();
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
 }

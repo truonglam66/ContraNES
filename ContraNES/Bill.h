@@ -72,7 +72,7 @@ class CBill : public CGameObject
 	BOOLEAN isOnPlatform;
 	int coin;
 	void OnCollisionWithGround(LPCOLLISIONEVENT e);
-	//void OnCollisionWithSoldier(LPCOLLISIONEVENT e);
+	void OnCollisionWithSoldier(LPCOLLISIONEVENT e);
 	//void OnCollisionWithCoin(LPCOLLISIONEVENT e);
 	//void OnCollisionWithPortal(LPCOLLISIONEVENT e);
 
@@ -94,4 +94,3 @@ public:
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 };
-

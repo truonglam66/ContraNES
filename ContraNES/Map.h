@@ -1,8 +1,8 @@
 #pragma once
 #include "Sprites.h"
 
-#define TILE_WIDTH 31
-#define TILE_HEIGHT 31
+#define TILE_WIDTH 16
+#define TILE_HEIGHT 16
 
 class CMap
 {

@@ -4,6 +4,7 @@ map.txt
 bill.txt
 soldier.txt
 grass.txt
+Soldier2.txt
 [TILEMAP]
 map1.txt
 #
@@ -13,11 +14,13 @@ map1.txt
 # See OBJECT_TYPE constants in AssetIDs.h
 
 #BACKGROUND
-9999	1664	120
+#9999	1664	120
 #BILL
-1	58	150
+1	100	200
 #SOLDIER
 11	200	140
+#SOLDIER2
+15	200	90
 
 #Portal 
 #50	300	110	316	140	2

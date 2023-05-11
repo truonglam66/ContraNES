@@ -25,8 +25,9 @@ void CMap::AddTiles()
 	{
 		int left = tileID % ColumnsInTileSet * TILE_WIDTH;
 		int top = tileID / ColumnsInTileSet * TILE_HEIGHT;
-		int right = left + TILE_WIDTH+1;
-		int bottom = top + TILE_HEIGHT+1;
+		int right = left + TILE_WIDTH;
+		int bottom = top + TILE_HEIGHT;
+		//DebugOut(L"id, left, top, right, bottom: %d, %d, %d, %d, %d", tileID, left, top, right, bottom);
 		LPSPRITE NewTile = new CSprite(tileID, left, top, right, bottom, TileTexture);
 		this->Tiles.push_back(NewTile);
 	}
@@ -51,7 +52,8 @@ void CMap::Render()
 		for (int CurrentColumn = BeginColumn; CurrentColumn < EndColumn; CurrentColumn++)
 		{
 			int index = TileMap[CurrentRow][CurrentColumn] - 1;
-			Tiles.at(index)->Draw((float)(CurrentColumn * TILE_WIDTH), (float)(CurrentRow * TILE_HEIGHT));
+			DebugOut(L"index: %d", index);
+			Tiles.at(index)->Draw((float)(CurrentColumn * TILE_WIDTH)+8, (float)(CurrentRow * TILE_HEIGHT)+8);
 		}
 }
 

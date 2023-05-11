@@ -1,7 +1,9 @@
 #include "Game.h"
 #include "Bill.h"
-
-CBill::CBill(float x, float y):CGameObject(x, y)
+#include "Soldier.h"
+#include "Utils.h"
+#include "debug.h"
+CBill::CBill(float x, float y) :CGameObject(x, y)
 {
 	isSitting = false;
 	maxVx = 0.0f;
@@ -25,7 +27,6 @@ void CBill::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		y = 0;
 	}
 	isOnPlatform = false;
-
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
@@ -41,7 +42,7 @@ void CBill::OnCollisionWith(LPCOLLISIONEVENT e)
 	{
 		vy = 0;
 		//if (e->ny < 0) {
-			isOnPlatform = true;
+		isOnPlatform = true;
 		//}
 	}
 	else
@@ -49,47 +50,41 @@ void CBill::OnCollisionWith(LPCOLLISIONEVENT e)
 		{
 			vx = 0;
 		}
-	/*if (dynamic_cast<CGoomba*>(e->obj))
-		OnCollisionWithGoomba(e);
-	else if (dynamic_cast<CCoin*>(e->obj))
-		OnCollisionWithCoin(e);
-	else if (dynamic_cast<CPortal*>(e->obj))
-		OnCollisionWithPortal(e);*/
+	if (dynamic_cast<CSoldier*>(e->obj))
+		OnCollisionWithSoldier(e);
+	//else if (dynamic_cast<CCoin*>(e->obj))
+		//OnCollisionWithCoin(e);
+	//else if (dynamic_cast<CPortal*>(e->obj))
+		//OnCollisionWithPortal(e);*/
 }
 
-//void CBill::OnCollisionWithSoldier(LPCOLLISIONEVENT e)
-//{
-//	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
-//
-//	// jump on top >> kill Goomba and deflect a bit 
-//	if (e->ny < 0)
-//	{
-//		if (goomba->GetState() != GOOMBA_STATE_DIE)
-//		{
-//			goomba->SetState(GOOMBA_STATE_DIE);
-//			vy = -BILL_JUMP_DEFLECT_SPEED;
-//		}
-//	}
-//	else // hit by Goomba
-//	{
-//		if (untouchable == 0)
-//		{
-//			if (goomba->GetState() != GOOMBA_STATE_DIE)
-//			{
-//				if (level > BILL_LEVEL_SMALL)
-//				{
-//					level = BILL_LEVEL_SMALL;
-//					StartUntouchable();
-//				}
-//				else
-//				{
-//					DebugOut(L">>> Mario DIE >>> \n");
-//					SetState(BILL_STATE_DIE);
-//				}
-//			}
-//		}
-//	}
-//}
+void CBill::OnCollisionWithSoldier(LPCOLLISIONEVENT e)
+{
+	CSoldier* soldier = dynamic_cast<CSoldier*>(e->obj);
+
+	// jump on top >> kill Soldier 
+	if (e->ny < 0)
+	{
+		if (soldier->GetState() != SOLDIER_STATE_DIE)
+		{
+			soldier->SetState(SOLDIER_STATE_DIE);
+			vy = -BILL_STATE_RUNNING_RIGHT;
+		}
+	}
+	else // hit by Soldier
+	{
+		if (untouchable == 0)
+		{
+			if (soldier->GetState() != SOLDIER_STATE_DIE)
+			{
+
+				//DebugOut(L">>> BILL DIE >>> \n");
+				SetState(BILL_STATE_DIE);
+			}
+
+		}
+	}
+}
 
 //void CBill::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 //{
@@ -133,10 +128,13 @@ void CBill::Render()
 	case BILL_STATE_WALKING_LEFT:
 		aniId = 103;
 		break;
+	case BILL_STATE_DIE:
+		aniId = 106;
+		break;
 	}
 	animations->Get(aniId)->Render(x, y);
 
-	//RenderBoundingBox();
+	RenderBoundingBox();
 
 	//DebugOutTitle(L"Coins: %d", coin);
 }
@@ -211,11 +209,11 @@ void CBill::SetState(int state)
 		vx = 0.0f;
 		break;
 
-	case BILL_STATE_DIE:
-		//vy = -BILL_JUMP_DEFLECT_SPEED;
-		vx = 0;
-		ax = 0;
-		break;
+		//case BILL_STATE_DIE:
+		//	//vy = -BILL_JUMP_DEFLECT_SPEED;
+		//	vx = 0;
+		//	ax = 0;
+		//	break;
 	}
 
 	CGameObject::SetState(state);
@@ -223,8 +221,8 @@ void CBill::SetState(int state)
 
 void CBill::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	left = x - 23 / 2;
+	left = x;//x - 23 / 2;
 	bottom = y + 30 / 2;
 	right = x + 23 / 2;
-	top = y - 30 / 2;
+	top = y;// y - 30 / 2;
 }
