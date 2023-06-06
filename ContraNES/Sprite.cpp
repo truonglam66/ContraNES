@@ -40,9 +40,7 @@ void CSprite::Draw(float x, float y)
 
 	x = (FLOAT)floor(x);
 	y = (FLOAT)floor(y);
-	//g->GetBackBufferHeight() - y + cy
-	//code moi: g->GetBackBufferHeight()+y-cy
-	D3DXMatrixTranslation(&matTranslation, x-cx, g->GetBackBufferHeight()+y-cy, 0.1f);
+	D3DXMatrixTranslation(&matTranslation, x-cx, -g->GetBackBufferHeight()+y+cy, 0.1f);
 	this->sprite.matWorld = (this->matScaling * matTranslation);
 		
 	g->GetSpriteHandler()->DrawSpritesImmediate(&sprite, 1, 0, 0);
