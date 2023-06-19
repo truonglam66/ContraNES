@@ -9,7 +9,6 @@
 #include "Soldier.h"
 #include "Bill.h"
 #include "Portal.h"
-#include "Background.h"
 #include "Ground.h"
 #include "Soldier2.h"
 
@@ -117,9 +116,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		}
 		obj = new CBill(x, y);
 		player = (CBill*)obj;
-		break;
-	case OBJECT_TYPE_BACKGROUND:
-		obj = new CBackground(x, y);
 		break;
 	case OBJECT_TYPE_GROUND:
 		_width = (float)atof(tokens[3].c_str());
