@@ -78,7 +78,7 @@ void CSoldier::Render()
 		break;
 	}
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
-	//RenderBoundingBox();
+	RenderBoundingBox();
 }
 
 void CSoldier::SetState(int state)

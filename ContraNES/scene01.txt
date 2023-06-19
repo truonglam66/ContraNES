@@ -1,6 +1,5 @@
 # list of object assets to load in this scene
 [ASSETS]
-map.txt
 bill.txt
 soldier.txt
 grass.txt
@@ -13,10 +12,8 @@ map1.txt
 # type: 1 = Bill, Soldier = 11
 # See OBJECT_TYPE constants in AssetIDs.h
 
-#BACKGROUND
-9999	1664	118
 #BILL
-1	100	200
+1	100	150
 #SOLDIER
 11	200	140
 #SOLDIER2

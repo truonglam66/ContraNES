@@ -25,7 +25,7 @@ void CMap::AddTiles()
 	{
 		int left = tileID % ColumnsInTileSet * TILE_WIDTH;
 		int top = tileID / ColumnsInTileSet * TILE_HEIGHT;
-		int right = left + TILE_WIDTH;
+		int right = left + TILE_WIDTH - 1;
 		int bottom = top + TILE_HEIGHT;
 		//DebugOut(L"id, left, top, right, bottom: %d, %d, %d, %d, %d", tileID, left, top, right, bottom);
 		LPSPRITE NewTile = new CSprite(tileID, left, top, right, bottom, TileTexture);
@@ -35,13 +35,7 @@ void CMap::AddTiles()
 
 void CMap::Render()
 {
-	//Get camera
-	CGame* game = CGame::GetInstance();
-	float cam_x, cam_y;
-	game->GetCamPos(cam_x, cam_y);
-	int cam_w = game->GetBackBufferWidth();
-	int cam_h = game->GetBackBufferHeight();
-	int FirstColumn = int(floor(cam_x / TILE_WIDTH));
+	int FirstColumn = int(floor(0 / TILE_WIDTH));
 	int LastColumn = TotalColumnsInMap;
 	if (LastColumn >= TotalColumnsInMap)
 		LastColumn = TotalColumnsInMap - 1;
@@ -52,9 +46,9 @@ void CMap::Render()
 			int index = TileMap[CurrentRow][CurrentColumn] - 1;
 			if (index < TotalTiles)
 			{
-				float xDraw = float(CurrentColumn * TILE_WIDTH);
-				float yDraw = float(CurrentRow * TILE_HEIGHT);
-				Tiles.at(index)->Draw(xDraw + 8, yDraw);
+				float xDraw = float(CurrentColumn * TILE_WIDTH) + float(0 * TILE_WIDTH);
+				float yDraw = float((this->TotalRowsInMap - CurrentRow) * TILE_HEIGHT) - float(0 * TILE_HEIGHT);
+				Tiles.at(index)->Draw(xDraw - 9, yDraw - 1.0f);
 			}
 		}
 }
