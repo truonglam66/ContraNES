@@ -8,8 +8,7 @@ CBill::CBill(float x, float y) :CGameObject(x, y)
 	isSitting = false;
 	maxVx = 0.0f;
 	ax = 0.0f;
-	ay = -BILL_GRAVITY;
-
+	ay = BILL_GRAVITY;
 	isOnPlatform = false;
 	SetState(BILL_STATE_IDLE);
 };
