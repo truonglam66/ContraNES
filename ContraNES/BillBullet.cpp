@@ -10,6 +10,9 @@ void CBillBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CBillBullet::Render()
 {
+	int aniId = 0; //Ngoc
+	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
+	//RenderBoundingBox();
 }
 
 void CBillBullet::OnNoCollision(DWORD dt)
