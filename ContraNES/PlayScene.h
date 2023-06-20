@@ -5,6 +5,7 @@
 #include "GameObject.h"
 #include "Bill.h"
 #include "Map.h"
+#include "Bullet.h"
 class CPlayScene : public CScene
 {
 protected:
@@ -12,6 +13,7 @@ protected:
 	LPGAMEOBJECT player;
 	CMap* map;
 	vector<LPGAMEOBJECT> objects;
+	vector<LPBULLET>* listBullet;
 
 	void _ParseSection_SPRITES(string line);
 	void _ParseSection_ANIMATIONS(string line);
@@ -33,7 +35,7 @@ public:
 
 	void Clear();
 	void PurgeDeletedObjects();
-
+	vector<LPBULLET>* GetListBullet() { return listBullet; }
 	static bool IsGameObjectDeleted(const LPGAMEOBJECT& o);
 };
 
