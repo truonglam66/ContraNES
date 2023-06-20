@@ -13,3 +13,4 @@ public:
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void DeleteBullet() { return; }
 };
+typedef CBullet* LPBULLET;
