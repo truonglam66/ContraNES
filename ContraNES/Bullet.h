@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "PlayScene.h"
 class CBullet : public CGameObject
 {
 public:
@@ -11,6 +12,6 @@ public:
 	virtual void OnNoCollision(DWORD dt);
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
-	virtual void DeleteBullet() { return; }
+	virtual void DeleteBullet();
 };
 typedef CBullet* LPBULLET;

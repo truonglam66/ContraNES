@@ -46,8 +46,8 @@ void CMap::Render()
 			if (index < TotalTiles)
 			{
 				float xDraw = float(CurrentColumn * TILE_WIDTH);
-				float yDraw = float((this->TotalRowsInMap - CurrentRow) * TILE_HEIGHT) - float(0 * TILE_HEIGHT);
-				Tiles.at(index)->Draw(xDraw, yDraw - 1.0f);
+				float yDraw = float((this->TotalRowsInMap - CurrentRow) * TILE_HEIGHT) - 8;
+				Tiles.at(index)->Draw(xDraw - 8, yDraw);
 			}
 		}
 }
