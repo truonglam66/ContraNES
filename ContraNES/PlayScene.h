@@ -13,7 +13,7 @@ protected:
 	LPGAMEOBJECT player;
 	CMap* map;
 	vector<LPGAMEOBJECT> objects;
-	vector<LPBULLET>* listBullet;
+	//vector<LPBULLET>* listBullet;
 
 	void _ParseSection_SPRITES(string line);
 	void _ParseSection_ANIMATIONS(string line);
@@ -35,7 +35,7 @@ public:
 
 	void Clear();
 	void PurgeDeletedObjects();
-	vector<LPBULLET>* GetListBullet() { return listBullet; }
+	//vector<LPBULLET>* GetListBullet() { return listBullet; }
 	static bool IsGameObjectDeleted(const LPGAMEOBJECT& o);
 };
 

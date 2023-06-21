@@ -25,8 +25,8 @@ void CMap::AddTiles()
 	{
 		int left = tileID % ColumnsInTileSet * TILE_WIDTH;
 		int top = tileID / ColumnsInTileSet * TILE_HEIGHT;
-		int right = left + TILE_WIDTH;
-		int bottom = top + TILE_HEIGHT;
+		float right = left + TILE_WIDTH - 1.0f;
+		float bottom = top + TILE_HEIGHT - 1.0f;
 		LPSPRITE NewTile = new CSprite(tileID, left, top, right, bottom, TileTexture);
 		this->Tiles.push_back(NewTile);
 	}
