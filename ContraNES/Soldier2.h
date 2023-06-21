@@ -1,7 +1,7 @@
 #pragma once
 #include "GameObject.h"
 
-#define SOLDIER_GRAVITY 0//0.002f
+#define SOLDIER_GRAVITY 0 //0.002f
 #define SOLDIER_RUNNING_SPEED 0.05f
 
 #define SOLDIER_STATE_RUNNING_RIGHT	0
@@ -9,19 +9,14 @@
 #define SOLDIER_STATE_LAY	2
 #define SOLDIER_STATE_JUMP	3
 #define SOLDIER_STATE_RUNNING_LEFT	4
-#define SOLDIER_STATE_DIE 6
-#define SOLDIER_STATE_IDLE 5
 
 #define ID_ANI_SOLDIER_RUNNING_RIGHT 1100
 #define ID_ANI_SOLDIER_SHOOTING_RIGHT 1101
 #define ID_ANI_SOLDIER_LAY 1102
 #define ID_ANI_SOLDIER_JUMP 1103
 #define ID_ANI_SOLDIER_RUNNING_LEFT 1104
-#define ID_ANI_SOLDIER_IDLE 1105
-#define ID_ANI_SOLDIER_DIE 1106
 
-
-class CSoldier : public CGameObject
+class CSoldier2 : public CGameObject
 {
 protected:
 	float ax;
@@ -40,6 +35,6 @@ protected:
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 
 public:
-	CSoldier(float x, float y);
+	CSoldier2(float x, float y);
 	virtual void SetState(int state);
 };

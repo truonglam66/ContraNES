@@ -10,20 +10,10 @@ CSoldier::CSoldier(float x, float y) :CGameObject(x, y)
 
 void CSoldier::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	/*if (state == SOLDIER_STATE_DIE)
-	{
-		left = x - SOLDIER_BBOX_WIDTH / 2;
-		top = y - SOLDIER_BBOX_HEIGHT_DIE / 2;
-		right = left + SOLDIER_BBOX_WIDTH;
-		bottom = top + SOLDIER_BBOX_HEIGHT_DIE;
-	}
-	else
-	{
-		left = x - SOLDIER_BBOX_WIDTH / 2;
-		top = y - SOLDIER_BBOX_HEIGHT / 2;
-		right = left + SOLDIER_BBOX_WIDTH;
-		bottom = top + SOLDIER_BBOX_HEIGHT;
-	}*/
+	left = x - 22 / 2;
+	top = y - 28 / 2;
+	right = left + 22;
+	bottom = top + 28;
 }
 
 void CSoldier::OnNoCollision(DWORD dt)
@@ -43,7 +33,8 @@ void CSoldier::OnCollisionWith(LPCOLLISIONEVENT e)
 	}
 	else if (e->nx != 0)
 	{
-		vx = -vx;
+		//vx = 0;
+		SetState(SOLDIER_STATE_DIE);
 	}
 }
 
@@ -64,21 +55,27 @@ void CSoldier::Render()
 	int aniId;
 	switch (state)
 	{
-		case SOLDIER_STATE_RUNNING_RIGHT:
-			aniId = ID_ANI_SOLDIER_RUNNING_RIGHT;
-			break;
-		case SOLDIER_STATE_SHOOT_RIGHT:
-			aniId = ID_ANI_SOLDIER_SHOOTING_RIGHT;
-			break;
-		case SOLDIER_STATE_LAY:
-			aniId = ID_ANI_SOLDIER_LAY;
-			break;
-		case SOLDIER_STATE_JUMP:
-			aniId = ID_ANI_SOLDIER_JUMP;
-			break;
-		case SOLDIER_STATE_RUNNING_LEFT:
-			aniId = ID_ANI_SOLDIER_RUNNING_LEFT;
-			break;
+	case SOLDIER_STATE_RUNNING_RIGHT:
+		aniId = ID_ANI_SOLDIER_RUNNING_RIGHT;
+		break;
+	case SOLDIER_STATE_SHOOT_RIGHT:
+		aniId = ID_ANI_SOLDIER_SHOOTING_RIGHT;
+		break;
+	case SOLDIER_STATE_LAY:
+		aniId = ID_ANI_SOLDIER_LAY;
+		break;
+	case SOLDIER_STATE_JUMP:
+		aniId = ID_ANI_SOLDIER_JUMP;
+		break;
+	case SOLDIER_STATE_RUNNING_LEFT:
+		aniId = ID_ANI_SOLDIER_RUNNING_LEFT;
+		break;
+	case SOLDIER_STATE_IDLE:
+		aniId = ID_ANI_SOLDIER_IDLE;
+		break;
+	case SOLDIER_STATE_DIE:
+		aniId = ID_ANI_SOLDIER_DIE;
+		break;
 	}
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	RenderBoundingBox();
@@ -106,8 +103,17 @@ void CSoldier::SetState(int state)
 		vy = 0;
 		break;
 	case SOLDIER_STATE_RUNNING_LEFT:
-		vx = -SOLDIER_RUNNING_SPEED;
+		vx = 0;// -SOLDIER_RUNNING_SPEED;
 		vy = 0;
+		break;
+	case SOLDIER_STATE_IDLE:
+		vx = 0;
+		vy = 0;
+		break;
+	case SOLDIER_STATE_DIE:
+		vx = 0;
+		vy = 0;
+		y = y - 50;
 		break;
 	}
 }

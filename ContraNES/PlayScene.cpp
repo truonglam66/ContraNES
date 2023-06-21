@@ -9,6 +9,8 @@
 #include "Soldier.h"
 #include "Bill.h"
 #include "Portal.h"
+#include "Ground.h"
+#include "Soldier2.h"
 
 #include "SampleKeyEventHandler.h"
 #include "debug.h"
@@ -26,6 +28,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 #define SCENE_SECTION_UNKNOWN -1
 #define SCENE_SECTION_ASSETS	1
 #define SCENE_SECTION_OBJECTS	2
+#define	SCENE_SECTION_TILEMAP	3
 
 #define ASSETS_SECTION_UNKNOWN -1
 #define ASSETS_SECTION_SPRITES 1
@@ -101,7 +104,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	int object_type = atoi(tokens[0].c_str());
 	float x = (float)atof(tokens[1].c_str());
 	float y = (float)atof(tokens[2].c_str());
-
+	float _width, _height = 0;
 	CGameObject* obj = NULL;
 
 	switch (object_type)
@@ -114,8 +117,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CBill(x, y);
 		player = (CBill*)obj;
 		break;
-	//case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x, y); break;
-	//case OBJECT_TYPE_BRICK: obj = new CBrick(x, y); break;
+	case OBJECT_TYPE_GROUND:
+		_width = (float)atof(tokens[3].c_str());
+		_height = (float)atof(tokens[4].c_str());
+		obj = new CGround(x, y, _width, _height);
+		break;
 	//case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
 
 	/*case OBJECT_TYPE_PLATFORM:
@@ -147,12 +153,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	//break;
 
 	case OBJECT_TYPE_SOLDIER:
-	{
 		obj = new CSoldier(x, y);
 		break;
-	}
-	break;
-
+	case OBJECT_TYPE_SOLDIER2:
+		obj = new CSoldier2(x, y);
+		break;
 	default:
 		DebugOut(L"[ERROR] Invalid object type: %d\n", object_type);
 		return;
@@ -163,6 +168,29 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 
 	objects.push_back(obj);
+}
+
+/*
+	Parse a line in section [TILEMAP]
+*/
+void CPlayScene::_ParseSection_TILEMAP(string line)
+{
+	int ID, rowMap, columnMap, columnTile, rowTile, totalTiles;
+	LPCWSTR path = ToLPCWSTR(line);
+	ifstream f;
+	f.open(path);
+	f >> ID >> rowMap >> columnMap >> rowTile >> columnTile >> totalTiles;
+	int** tileMapData = new int* [rowMap];
+	for (int i = 0; i < rowMap; i++)
+	{
+		tileMapData[i] = new int[columnMap];
+		for (int j = 0; j < columnMap; j++)
+			f >> tileMapData[i][j];
+	}
+	f.close();
+
+	map = new CMap(ID, rowMap, columnMap, rowTile, columnTile, totalTiles, tileMapData);
+	map->AddTiles();
 }
 
 void CPlayScene::LoadAssets(LPCWSTR assetFile)
@@ -217,6 +245,7 @@ void CPlayScene::Load()
 
 		if (line[0] == '#') continue;	// skip comment lines	
 		if (line == "[ASSETS]") { section = SCENE_SECTION_ASSETS; continue; };
+		if (line == "[TILEMAP]") { section = SCENE_SECTION_TILEMAP; continue; };
 		if (line == "[OBJECTS]") { section = SCENE_SECTION_OBJECTS; continue; };
 		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }
 
@@ -227,6 +256,7 @@ void CPlayScene::Load()
 		{
 		case SCENE_SECTION_ASSETS: _ParseSection_ASSETS(line); break;
 		case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
+		case SCENE_SECTION_TILEMAP: _ParseSection_TILEMAP(line); break;
 		}
 	}
 
@@ -262,15 +292,16 @@ void CPlayScene::Update(DWORD dt)
 	cx -= game->GetBackBufferWidth() / 2;
 	cy -= game->GetBackBufferHeight() / 2;
 
-	if (cx < 0) cx = 0;
-
-	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
+	if (cx < 0) cx = 0; 
+	//if (cy < 200) cy = 200;
+	CGame::GetInstance()->SetCamPos(cx, 200);
 
 	PurgeDeletedObjects();
 }
 
 void CPlayScene::Render()
 {
+	map->Render();
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
 }

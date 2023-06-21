@@ -14,7 +14,7 @@
 #define BILL_JUMP_SPEED_Y		0.5f
 #define BILL_JUMP_RUN_SPEED_Y	0.6f
 
-#define BILL_GRAVITY			0.002f
+#define BILL_GRAVITY			-0.002f
 
 #define BILL_STATE_IDLE				1
 #define BILL_STATE_WALKING_RIGHT	2
@@ -71,8 +71,8 @@ class CBill : public CGameObject
 	ULONGLONG untouchable_start;
 	BOOLEAN isOnPlatform;
 	int coin;
-
-	//void OnCollisionWithSoldier(LPCOLLISIONEVENT e);
+	void OnCollisionWithGround(LPCOLLISIONEVENT e);
+	void OnCollisionWithSoldier(LPCOLLISIONEVENT e);
 	//void OnCollisionWithCoin(LPCOLLISIONEVENT e);
 	//void OnCollisionWithPortal(LPCOLLISIONEVENT e);
 
@@ -94,4 +94,3 @@ public:
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 };
-

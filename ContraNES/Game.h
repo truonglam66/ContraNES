@@ -98,6 +98,8 @@ public:
 
 	int GetBackBufferWidth() { return backBufferWidth; }
 	int GetBackBufferHeight() { return backBufferHeight; }
+	int GetScreenWidth() { return backBufferWidth; }
+	int GetScreenHeight() { return backBufferHeight; }
 
 	static CGame* GetInstance();
 
@@ -106,6 +108,7 @@ public:
 	void SetCamPos(float x, float y) { cam_x = x; cam_y = y; }
 	void GetCamPos(float& x, float& y) { x = cam_x; y = cam_y; }
 
+	int GetCurrentScenceID() { return current_scene; }
 	LPSCENE GetCurrentScene() { return scenes[current_scene]; }
 	void Load(LPCWSTR gameFile);
 	void SwitchScene();

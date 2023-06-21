@@ -1,7 +1,7 @@
 [SETTINGS]
 start	1
 width	320
-height	240
+height	220
 
 #id	type	file
 # type: 0: intro, 1: play scene 
@@ -20,3 +20,7 @@ height	240
 3	textures\Enemies.png
 4	textures\Player.png
 5	textures\Player1.png
+100	textures\stage1Tile.png
+888	textures\grass.png
+9999	textures\font.png
+-100	textures\bbox.png
