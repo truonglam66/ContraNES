@@ -4,38 +4,9 @@
 
 int TreeNode::NodeCount = 0;
 
-BOOL TreeNode::CheckObject(LPGAMEOBJECT object, LPTREENODE node)
+void TreeNode::AddObjectToNode(LPGAMEOBJECT object)
 {
-	float oleft, otop, oright, obottom;
-	object->GetBoundingBox(oleft, otop, oright, obottom);
-	float nleft, ntop, nright, nbottom;
-	node->GetBoundingBox(nleft, ntop, nright, nbottom);
-	if (oleft >= nright || nleft >= oright)
-		return false;
-	if (otop <= nbottom || ntop <= obottom)
-		return false;
-	return true;
-}
-
-BOOL TreeNode::CheckObj(float left, float top, float right, float bottom, LPTREENODE node)
-{
-	return true;
-}
-
-TreeNode::TreeNode(float x, float y, float width, float height, LPTREENODE parent) {
-	id = NodeCount;
-	this->x = x;
-	this->y = y;
-	this->width = width;
-	this->height = height;
-	NodeCount++;
-	child = NULL;
-	gameObjects = NULL;
-	parentNode = parent;
-}
-void TreeNode::AddObject(LPGAMEOBJECT object)
-{
-	if (!CheckObject(object, this))
+	if (!IsIntersac(object, this))
 		return;
 	if (child == NULL)
 	{
@@ -50,15 +21,17 @@ void TreeNode::AddObject(LPGAMEOBJECT object)
 	else
 	{
 		for (int i = 0; i < child->size(); i++)
-			child->at(i)->AddObject(object);
+			child->at(i)->AddObjectToNode(object);
 	}
 }
 void TreeNode::Update(LPGAMEOBJECT object)
 {
 	vector<LPTREENODE>* treeNodeList = this->IsObjectInside(object);
+	if (treeNodeList == nullptr)
+		return;
 	for (int i = 0; i < treeNodeList->size(); i++)
 	{
-		if (!CheckObject(object, treeNodeList->at(i)))
+		if (!IsIntersac(object, treeNodeList->at(i)) || object->IsDeleted())
 		{
 			vector<LPGAMEOBJECT>* objectList = treeNodeList->at(i)->gameObjects;
 			objectList->erase(std::remove(objectList->begin(), objectList->end(), object));
@@ -66,7 +39,9 @@ void TreeNode::Update(LPGAMEOBJECT object)
 				treeNodeList->at(i)->gameObjects = NULL;
 		}
 	}
-	this->AddObject(object);
+	if (object->IsDeleted())
+		return;
+	this->AddObjectToNode(object);
 }
 vector<LPTREENODE>* TreeNode::NodeInCam()
 {
@@ -78,10 +53,9 @@ vector<LPTREENODE>* TreeNode::NodeInCam()
 	}
 	float left, top;
 	CGame::GetInstance()->GetCamPos(left, top);
-	float right = left + CGame::GetInstance()->GetBackBufferWidth();
-	float bottom = top;
-	top = top + CGame::GetInstance()->GetBackBufferHeight();
-	if (!CheckObj(left, top, right, bottom, this))
+	float right = left + CGame::GetInstance()->GetScreenWidth();
+	float bottom = top - CGame::GetInstance()->GetScreenHeight();
+	if (!IsIntersac(left, top, right, bottom, this))
 		return new vector<LPTREENODE>();
 	if (child != NULL)
 	{
@@ -100,9 +74,6 @@ vector<LPTREENODE>* TreeNode::NodeInCam()
 }
 void TreeNode::Split()
 {
-	/*float CamW, CamH;
-	CamW = CGame::GetInstance()->GetBackBufferWidth();
-	CamH = CGame::GetInstance()->GetBackBufferHeight();*/
 	if (child != NULL)
 	{
 		for (int i = 0; i < child->size(); i++)
@@ -127,28 +98,20 @@ void TreeNode::Split()
 			float left, top, right, down;
 			LPGAMEOBJECT temp = gameObjects->at(i);
 			temp->GetBoundingBox(left, top, right, down);
-			if (CheckObject(gameObjects->at(i), node1))
-				node1->AddObject(temp);
-			if (CheckObject(gameObjects->at(i), node2))
-				node2->AddObject(temp);
-			if (CheckObject(gameObjects->at(i), node3))
-				node3->AddObject(temp);
-			if (CheckObject(gameObjects->at(i), node4))
-				node4->AddObject(temp);
+			if (IsIntersac(gameObjects->at(i), node1))
+				node1->AddObjectToNode(temp);
+			if (IsIntersac(gameObjects->at(i), node2))
+				node2->AddObjectToNode(temp);
+			if (IsIntersac(gameObjects->at(i), node3))
+				node3->AddObjectToNode(temp);
+			if (IsIntersac(gameObjects->at(i), node4))
+				node4->AddObjectToNode(temp);
 		}
 		gameObjects = NULL;
 	}
 
 }
 
-void TreeNode::ClearObject() {
-	for (int i = 0; i < gameObject.size(); i++) {
-		if (gameObject[i]->IsDeleted()) {
-			delete gameObject[i];
-			gameObject.erase(gameObject.begin() + i);
-		}
-	}
-}
 vector<LPTREENODE>* TreeNode::IsObjectInside(LPGAMEOBJECT object)
 {
 	if (gameObjects != NULL)
@@ -174,22 +137,4 @@ vector<LPTREENODE>* TreeNode::IsObjectInside(LPGAMEOBJECT object)
 	if (a->size() > 0)
 		return a;
 	return NULL;
-}
-
-vector<LPGAMEOBJECT>* TreeNode::GetObject() {
-	if (child != NULL)
-	{
-		vector<LPGAMEOBJECT>* result = new vector<LPGAMEOBJECT>();
-		for (int i = 0; i < child->size(); i++)
-		{
-			LPTREENODE temp = child->at(i);
-			vector<LPGAMEOBJECT>* gameObjectList = temp->GetObject();
-			if (gameObjectList != NULL)
-				result->insert(result->end(), gameObjectList->begin(), gameObjectList->end());
-
-		}
-		return result;
-	}
-	else
-		return gameObjects;
 }
