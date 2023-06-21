@@ -72,6 +72,30 @@ vector<LPTREENODE>* TreeNode::NodeInCam()
 	}
 	return new vector<LPTREENODE>();
 }
+bool TreeNode::IsIntersac(LPGAMEOBJECT object, LPTREENODE node)
+{
+	float oleft, otop, oright, obottom;
+	object->GetBoundingBox(oleft, otop, oright, obottom);
+	float nleft, ntop, nright, nbottom;
+	node->GetBoundingBox(nleft, ntop, nright, nbottom);
+	if (oleft >= nright || nleft >= oright)
+		return false;
+	if (otop <= nbottom || ntop <= obottom)
+		return false;
+	return true;
+}
+
+bool TreeNode::IsIntersac(float left, float top, float right, float bottom, LPTREENODE node)
+{
+	float nleft, ntop, nright, nbottom;
+	node->GetBoundingBox(nleft, ntop, nright, nbottom);
+	if (left >= nright || nleft >= right)
+		return false;
+	if (top <= nbottom || ntop <= bottom)
+		return false;
+	return true;
+}
+
 void TreeNode::Split()
 {
 	if (child != NULL)
@@ -81,7 +105,6 @@ void TreeNode::Split()
 	}
 	else
 	{
-
 		LPTREENODE node1 = new TreeNode(x, y, width / 2, height / 2, this);
 		LPTREENODE node2 = new TreeNode(x + width / 2, y, width / 2, height / 2, this);
 		LPTREENODE node3 = new TreeNode(x, y - height / 2, width / 2, height / 2, this);

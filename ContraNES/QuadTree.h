@@ -29,7 +29,6 @@ public:
 		parentNode = parent;
 	}
 	void Split();
-
 	void AddObjectToNode(LPGAMEOBJECT object);
 	void Update(LPGAMEOBJECT object);
 	vector<LPTREENODE>* IsObjectInside(LPGAMEOBJECT object);
@@ -58,4 +57,6 @@ public:
 		else
 			return gameObjects;
 	}
+	bool IsIntersac(LPGAMEOBJECT object, LPTREENODE node);
+	bool IsIntersac(float left, float top, float right, float bottom, LPTREENODE node);
 };
