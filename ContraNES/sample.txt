@@ -22,4 +22,5 @@ height	220
 5	textures\Player1.png
 100	textures\stage1Tile.png
 888	textures\grass.png
+9999	textures\font.png
 -100	textures\bbox.png
