@@ -13,30 +13,49 @@ private:
 	float width;
 	float height;
 	static int NodeCount;
-	//float oleft, otop, oright, obottom;
-	//float nleft, ntop, nright, nbottom;
 	LPTREENODE parentNode;
 	vector<LPTREENODE>* child;
 	vector<LPGAMEOBJECT>* gameObjects;
-	vector<LPGAMEOBJECT> gameObject;
 public:
-	TreeNode(float x, float y, float width, float height, LPTREENODE parent = NULL);
+	TreeNode(float x, float y, float width, float height, LPTREENODE parent = NULL) {
+		id = NodeCount;
+		this->x = x;
+		this->y = y;
+		this->width = width;
+		this->height = height;
+		NodeCount++;
+		child = NULL;
+		gameObjects = NULL;
+		parentNode = parent;
+	}
 	void Split();
 
-	BOOL CheckObject(LPGAMEOBJECT object, LPTREENODE node);
-	BOOL CheckObj(float left, float top, float right, float bottom, LPTREENODE node);
-
-	void AddObject(LPGAMEOBJECT object);
+	void AddObjectToNode(LPGAMEOBJECT object);
 	void Update(LPGAMEOBJECT object);
-	void ClearObject();
 	vector<LPTREENODE>* IsObjectInside(LPGAMEOBJECT object);
-	vector<LPGAMEOBJECT>* GetObject();
 	void GetBoundingBox(float& left, float& top, float& right, float& down)
 	{
 		left = x;
-		down = y;
+		top = y;
 		right = x + width;
-		top = y + height;
+		down = y - height;
 	}
 	vector<LPTREENODE>* NodeInCam();
+	vector<LPGAMEOBJECT>* GetObject() {
+		if (child != NULL)
+		{
+			vector<LPGAMEOBJECT>* result = new vector<LPGAMEOBJECT>();
+			for (int i = 0; i < child->size(); i++)
+			{
+				LPTREENODE temp = child->at(i);
+				vector<LPGAMEOBJECT>* gameObjectList = temp->GetObject();
+				if (gameObjectList != NULL)
+					result->insert(result->end(), gameObjectList->begin(), gameObjectList->end());
+
+			}
+			return result;
+		}
+		else
+			return gameObjects;
+	}
 };

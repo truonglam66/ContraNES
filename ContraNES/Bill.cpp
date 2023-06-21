@@ -212,6 +212,11 @@ void CBill::SetState(int state)
 
 void CBill::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
+	//left = x;//x - 23 / 2;
+	//bottom = y + 30 / 2;
+	//right = x + 23 / 2;
+	//top = y;// y - 30 / 2;
+
 	left = x - 23 / 2;
 	bottom = y + 30 / 2;
 	right = x + 23 / 2;
