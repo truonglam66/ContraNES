@@ -1,17 +1,17 @@
 [SETTINGS]
-start	1
+start	4
 width	320
 height	220
 
 #id	type	file
 # type: 0: intro, 1: play scene 
 [SCENES]
-0	intro.txt
-1	scene01.txt
-2	scene02.txt
-3	scene03.txt
-4	scene04.txt
-5	ending.txt
+0	startScene.txt
+1	introScene01.txt
+2	scene01.txt
+3	introScene03.txt
+4	scene03.txt
+5	endingScene.txt
 
 # id	file 
 [TEXTURES]
@@ -21,6 +21,7 @@ height	220
 4	textures\Player.png
 5	textures\Player1.png
 100	textures\stage1Tile.png
+300	textures\stage3Tile.png
 888	textures\grass.png
 9999	textures\font.png
 -100	textures\bbox.png
