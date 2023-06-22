@@ -10,13 +10,6 @@ CFont::~CFont()
 
 void CFont::AddFontSprite()
 {
-#define CHAR_H	6
-#define FONT_TEXTURE_ID 9999
-#define FONT_TEXTURE_WIDTH 48
-#define FONT_TEXTURE_HEIGHT 72
-#define NUM_COLUMN 6
-#define SPACE 2 //khoang cach giua 2 ki tu
-
 	LPTEXTURE textures = CTextures::GetInstance()->Get(FONT_TEXTURE_ID);
 	//ki tu abc
 	int id, left, top, right, bottom;

@@ -9,4 +9,5 @@ protected:
 public:
 	CText(float x, float y, string text);
 	void Render();
+	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 };

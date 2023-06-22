@@ -8,3 +8,7 @@ void CText::Render()
 {
 	CFont::GetInstance()->DrawString(text, x, y);
 }
+
+void CText::GetBoundingBox(float& left, float& top, float& right, float& bottom)
+{
+}
