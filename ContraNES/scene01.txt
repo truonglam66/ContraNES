@@ -4,6 +4,7 @@ bill.txt
 soldier.txt
 grass.txt
 Soldier2.txt
+falcon.txt
 [TILEMAP]
 map1.txt
 #
@@ -18,6 +19,8 @@ map1.txt
 11	200	140
 #SOLDIER2
 15	200	90
+#FALCON
+16	210	90
 
 #Portal 
 #50	300	110	316	140	3

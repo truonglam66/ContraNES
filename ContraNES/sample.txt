@@ -1,5 +1,5 @@
 [SETTINGS]
-start	4
+start	2
 width	320
 height	220
 
@@ -20,6 +20,7 @@ height	220
 3	textures\Enemies.png
 4	textures\Player.png
 5	textures\Player1.png
+6 	textures\Falcon.png
 100	textures\stage1Tile.png
 300	textures\stage3Tile.png
 888	textures\grass.png
