@@ -1,4 +1,5 @@
 #include "Font.h"
+CFont* CFont::__instance = NULL;
 CFont::CFont()
 {
 }
@@ -47,4 +48,10 @@ void CFont::DrawString(string string, float x, float y)
 	int length = string.length();
 	for (int i = 0; i < length; i++)
 		charSet[string[i]]->Draw(x + i * (CHAR_W + SPACE), y);
+}
+
+CFont* CFont::GetInstance()
+{
+	if (__instance == NULL) __instance = new CFont();
+	return __instance;
 }

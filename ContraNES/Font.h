@@ -3,7 +3,9 @@
 #include "Textures.h"
 #include <string>
 #include <string.h>
+#include <unordered_map>
 
+using namespace std;
 #define CHAR_W	6
 #define CHAR_H	6
 #define FONT_TEXTURE_ID 9999
@@ -14,11 +16,12 @@
 
 class CFont
 {
-private:
+	static CFont* __instance;
 	unordered_map<char, LPSPRITE> charSet;
 public:
 	CFont();
 	~CFont();
 	void AddFontSprite();
 	void DrawString(string string, float x, float y);
+	static CFont* GetInstance();
 };
